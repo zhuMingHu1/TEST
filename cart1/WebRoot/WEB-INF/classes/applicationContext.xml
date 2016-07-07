@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/takeout">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.bean.Users</value>
+				<value>com.bean.Address</value>
+				<value>com.bean.Food</value>
+				<value>com.bean.Orders</value></list>
+		</property></bean>
+	<bean id="UsersDAO" class="com.bean.UsersDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AddressDAO" class="com.bean.AddressDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FoodDAO" class="com.bean.FoodDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="OrdersDAO" class="com.bean.OrdersDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CartService" class="com.service.CartService">
+		<property name="ordersDAO">
+			<ref bean="OrdersDAO"></ref>
+		</property>
+		<property name="foodDAO">
+			<ref bean="FoodDAO"></ref>
+		</property>
+		<property name="addrDAO">
+			<ref bean="AddressDAO"></ref>
+		</property>
+	</bean>
+	
+	<bean id="OrderService" class="com.service.OrderService">
+		<property name="ordersDAO">
+			<ref bean="OrdersDAO"></ref>
+		</property>
+		<property name="foodDAO">
+			<ref bean="FoodDAO"></ref>
+		</property>
+	</bean>
+	
+	<bean id="ShowCartAction" class="com.action.ShowCartAction" scope="prototype">
+		<property name="cartService">
+			<ref bean="CartService"></ref>
+		</property>
+	</bean>
+	
+	<bean id="ShowOrderAction" class="com.action.ShowOrderAction" scope="prototype">
+		<property name="orderService">
+			<ref bean="OrderService"></ref>
+		</property>
+	</bean>
+	
+	<bean id="PayCartAction" class="com.action.PayCartAction" scope="prototype">
+		<property name="cartService">
+			<ref bean="CartService"></ref>
+		</property>
+	</bean>
+	
+	<bean id="AddCartAction" class="com.action.AddCartAction" scope="prototype">
+		<property name="cartService">
+			<ref bean="CartService"></ref>
+		</property>
+	</bean>
+	
+	<bean id="DeleteCartAction" class="com.action.DeleteCartAction" scope="prototype">
+		<property name="cartService">
+			<ref bean="CartService"></ref>
+		</property>
+	</bean>
+	
+	<bean id="ChangeAddrAction" class="com.action.ChangeAddrAction" scope="prototype">
+		<property name="cartService">
+			<ref bean="CartService"></ref>
+		</property>
+	</bean>
+	
+</beans>
