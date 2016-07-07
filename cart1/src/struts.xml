@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+	
+	<package name="cart" extends="struts-default" namespace="">
+		<action name="ShowCart" class="ShowCartAction" method="showCart">
+			<result name="success">menu.jsp</result>
+		</action>
+		<action name="PayCart" class="PayCartAction" method="payCart">
+			<result name="success">pay.jsp</result>
+		</action>
+		<action name="AddOrder" class="AddOrderAction" method="addOrder">
+			<result name="success">menu.jsp</result>
+		</action>
+		<action name="DeleteOrder" class="DeleteCartAction" method="deleteOrder">
+			<result name="success">menu.jsp</result>
+		</action>
+		<action name="ChangeAddr" class="ChangeAddrAction" method="changeAddr">
+			<result name="success">menu.jsp</result>
+		</action>
+	</package>
+	
+	<package name="order" extends="struts-default" namespace="">
+		<action name="ShowOrder" class="ShowOrderAction" method="showOrder">
+			<result name="success">orders.jsp</result>
+		</action>
+	</package>
+</struts>    
